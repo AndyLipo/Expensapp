@@ -1,26 +1,37 @@
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Check, Eye, EyeOff, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
-export default function CrearCuentaPassword() {
+export default function CrearCuentaPasswordValidation() {
   const [password, setPassword] = useState("");
+  const [isStrongPassword, setIsStrongPassword] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
   const checkStrength = (pass) => {
     const requirements = [
-      { regex: /.{8,}/, text: "At least 8 characters" },
-      { regex: /[0-9]/, text: "At least 1 number" },
-      { regex: /[a-z]/, text: "At least 1 lowercase letter" },
-      { regex: /[A-Z]/, text: "At least 1 uppercase letter" },
+      { regex: /.{8,}/, text: "Al menos 8 carácteres" },
+      { regex: /[0-9]/, text: "Al menos 1 número" },
+      { regex: /[a-z]/, text: "Al menos 1 minúscula" },
+      { regex: /[A-Z]/, text: "Al menos 1 mayúscula" },
     ];
 
     return requirements.map((req) => ({
       met: req.regex.test(pass),
       text: req.text,
     }));
+  };
+
+  const validatePassword = (pass) => {
+    const strength = checkStrength(pass);
+    return strength.every(req => req.met);
+  };
+
+  const handlePasswordChange = (e) => {
+    const inputPassword = e.target.value;
+    setPassword(inputPassword);
+    setIsStrongPassword(validatePassword(inputPassword));
   };
 
   const strength = checkStrength(password);
@@ -38,43 +49,55 @@ export default function CrearCuentaPassword() {
   };
 
   const getStrengthText = (score) => {
-    if (score === 0) return "Enter a password";
-    if (score <= 2) return "Weak password";
-    if (score === 3) return "Medium password";
-    return "Strong password";
+    if (score === 0) return "Ingrese una contraseña";
+    if (score <= 2) return "Contraseña débil";
+    if (score === 3) return "Contraseña media";
+    return "Contraseña fuerte";
   };
 
-  return (
-    <div>
-      {/* Password input field with toggle visibility button */}
-      <div className="space-y-2">
-        <Label htmlFor="input-51">Input with password strength indicator</Label>
-        <div className="relative">
-          <Input
-            id="input-51"
-            className="pe-9"
-            placeholder="Password"
-            type={isVisible ? "text" : "password"}
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            aria-invalid={strengthScore < 4}
-            aria-describedby="password-strength"
-          />
-          <button
-            className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-            type="button"
-            onClick={toggleVisibility}
-            aria-label={isVisible ? "Hide password" : "Show password"}
-            aria-pressed={isVisible}
-            aria-controls="password"
-          >
-            {isVisible ? (
-              <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
-            ) : (
-              <Eye size={16} strokeWidth={2} aria-hidden="true" />
-            )}
-          </button>
-        </div>
+  return isStrongPassword ? (
+    <div className="group relative mt-3">
+      <div className="relative">
+        <Input
+          id="password-input-valid"
+          className="peer pe-9"
+          placeholder=" "
+          type={isVisible ? "text" : "password"}
+          value={password}
+          onChange={handlePasswordChange}
+          aria-invalid={strengthScore < 4}
+          aria-describedby="password-strength"
+        />
+        <label
+          htmlFor="password-input-valid"
+          className="absolute left-2 top-1/2 -translate-y-1/2 
+            text-sm text-muted-foreground/70 
+            transition-all duration-200 
+            peer-placeholder-shown:top-1/2 
+            peer-placeholder-shown:-translate-y-1/2 
+            peer-placeholder-shown:text-base 
+            peer-focus:top-0 
+            peer-focus:-translate-y-1/2 
+            peer-focus:text-xs 
+            peer-focus:text-foreground 
+            bg-background px-1"
+        >
+          Contraseña
+        </label>
+        <button
+          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          type="button"
+          onClick={toggleVisibility}
+          aria-label={isVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+          aria-pressed={isVisible}
+          aria-controls="password"
+        >
+          {isVisible ? (
+            <Eye size={16} strokeWidth={2} aria-hidden="true" />
+          ) : (
+            <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
+          )}
+        </button>
       </div>
 
       {/* Password strength indicator */}
@@ -84,7 +107,7 @@ export default function CrearCuentaPassword() {
         aria-valuenow={strengthScore}
         aria-valuemin={0}
         aria-valuemax={4}
-        aria-label="Password strength"
+        aria-label="Fuerza de contraseña"
       >
         <div
           className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
@@ -94,11 +117,11 @@ export default function CrearCuentaPassword() {
 
       {/* Password strength description */}
       <p id="password-strength" className="mb-2 text-sm font-medium text-foreground">
-        {getStrengthText(strengthScore)}. Must contain:
+        {getStrengthText(strengthScore)}
       </p>
 
       {/* Password requirements list */}
-      <ul className="space-y-1.5" aria-label="Password requirements">
+      <ul className="space-y-1.5" aria-label="Requisitos de contraseña">
         {strength.map((req, index) => (
           <li key={index} className="flex items-center gap-2">
             {req.met ? (
@@ -109,7 +132,77 @@ export default function CrearCuentaPassword() {
             <span className={`text-xs ${req.met ? "text-emerald-600" : "text-muted-foreground"}`}>
               {req.text}
               <span className="sr-only">
-                {req.met ? " - Requirement met" : " - Requirement not met"}
+                {req.met ? " - Requisito cumplido" : " - Requisito no cumplido"}
+              </span>
+            </span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  ) : (
+    <div className="group space-y-2">
+      <div className="relative">
+        <Input
+          id="password-input-invalid"
+          className="peer border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20 pe-9"
+          placeholder=" "
+          type={isVisible ? "text" : "password"}
+          value={password}
+          onChange={handlePasswordChange}
+        />
+        <label
+          htmlFor="password-input-invalid"
+          className="absolute left-2 top-1/2 -translate-y-1/2 
+            text-sm text-muted-foreground/70 
+            transition-all duration-200 
+            peer-placeholder-shown:top-1/2 
+            peer-placeholder-shown:-translate-y-1/2 
+            peer-placeholder-shown:text-base 
+            peer-focus:top-0 
+            peer-focus:-translate-y-1/2 
+            peer-focus:text-xs 
+            peer-focus:text-destructive 
+            bg-background px-1"
+        >
+          Contraseña
+        </label>
+        <button
+          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
+          type="button"
+          onClick={toggleVisibility}
+          aria-label={isVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
+          aria-pressed={isVisible}
+          aria-controls="password"
+        >
+          {isVisible ? (
+            <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
+          ) : (
+            <Eye size={16} strokeWidth={2} aria-hidden="true" />
+          )}
+        </button>
+      </div>
+      <p className="mt-2 text-xs text-destructive" role="alert" aria-live="polite">
+        Tu contraseña no cumple con los requisitos
+      </p>
+
+      {/* Password strength description */}
+      <p className="text-sm font-medium text-destructive">
+        Debe Contener:
+      </p>
+
+      {/* Password requirements list */}
+      <ul className="space-y-1.5" aria-label="Requisitos de contraseña">
+        {strength.map((req, index) => (
+          <li key={index} className="flex items-center gap-2">
+            {req.met ? (
+              <Check size={16} className="text-emerald-500" aria-hidden="true" />
+            ) : (
+              <X size={16} className="text-destructive" aria-hidden="true" />
+            )}
+            <span className={`text-xs ${req.met ? "text-emerald-600" : "text-destructive"}`}>
+              {req.text}
+              <span className="sr-only">
+                {req.met ? " - Requisito cumplido" : " - Requisito no cumplido"}
               </span>
             </span>
           </li>

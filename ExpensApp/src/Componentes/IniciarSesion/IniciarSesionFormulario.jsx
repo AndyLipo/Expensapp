@@ -1,9 +1,11 @@
-import { IniciarSesionInput } from './IniciarSesionInput'
+import IniciarSesionContraseña from './IniciarSesionContraseña'
+import IniciarSesionMail from './IniciarSesionMail'
 
 export const IniciarSesionFormulario = () => {
   return (
     <>
-        <IniciarSesionInput />
+        <IniciarSesionMail titulo="Email" id="usuario_correo"/>
+        <IniciarSesionContraseña id="usuario_password"/>
     </>
 )
 }
