@@ -13,8 +13,8 @@ export default function CrearCuentaPasswordValidation() {
     const requirements = [
       { regex: /.{8,}/, text: "Al menos 8 carácteres" },
       { regex: /[0-9]/, text: "Al menos 1 número" },
-      { regex: /[a-z]/, text: "Al menos 1 minúscula" },
       { regex: /[A-Z]/, text: "Al menos 1 mayúscula" },
+      { regex: /[a-z]/, text: "Al menos 1 minuscula" },
     ];
 
     return requirements.map((req) => ({
@@ -68,11 +68,13 @@ export default function CrearCuentaPasswordValidation() {
           aria-invalid={strengthScore < 4}
           aria-describedby="password-strength"
         />
+
         <label
           htmlFor="password-input-valid"
-          className="absolute left-2 top-1/2 -translate-y-1/2 
-            text-sm text-muted-foreground/70 
+          className="absolute left-2 top-0 -translate-y-1/2 z-10 
+            text-xs text-muted-foreground/70 
             transition-all duration-200 
+            bg-background px-1
             peer-placeholder-shown:top-1/2 
             peer-placeholder-shown:-translate-y-1/2 
             peer-placeholder-shown:text-base 
@@ -80,10 +82,13 @@ export default function CrearCuentaPasswordValidation() {
             peer-focus:-translate-y-1/2 
             peer-focus:text-xs 
             peer-focus:text-foreground 
-            bg-background px-1"
+            peer:not(:placeholder-shown):top-0 
+            peer:not(:placeholder-shown):-translate-y-1/2 
+            peer:not(:placeholder-shown):text-xs"
         >
           Contraseña
         </label>
+
         <button
           className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
           type="button"
@@ -143,29 +148,36 @@ export default function CrearCuentaPasswordValidation() {
     <div className="group space-y-2">
       <div className="relative">
         <Input
-          id="password-input-invalid"
-          className="peer border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20 pe-9"
+          id="password-input-valid"
+          className="peer pe-9"
           placeholder=" "
           type={isVisible ? "text" : "password"}
           value={password}
           onChange={handlePasswordChange}
+          aria-invalid={strengthScore < 4}
+          aria-describedby="password-strength"
         />
+
         <label
-          htmlFor="password-input-invalid"
-          className="absolute left-2 top-1/2 -translate-y-1/2 
-            text-sm text-muted-foreground/70 
+          htmlFor="password-input-valid"
+          className="absolute left-2 top-0 -translate-y-1/2 z-10 
+            text-xs text-muted-foreground/70 
             transition-all duration-200 
+            bg-background px-1
             peer-placeholder-shown:top-1/2 
             peer-placeholder-shown:-translate-y-1/2 
             peer-placeholder-shown:text-base 
             peer-focus:top-0 
             peer-focus:-translate-y-1/2 
             peer-focus:text-xs 
-            peer-focus:text-destructive 
-            bg-background px-1"
+            peer-focus:text-foreground 
+            peer:not(:placeholder-shown):top-0 
+            peer:not(:placeholder-shown):-translate-y-1/2 
+            peer:not(:placeholder-shown):text-xs"
         >
           Contraseña
         </label>
+
         <button
           className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
           type="button"
