@@ -1,22 +1,31 @@
 import { Input } from "@/components/ui/input";
 import { Check, Eye, EyeOff, X } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
 export default function CrearCuentaPasswordValidation() {
   const [password, setPassword] = useState("");
   const [isStrongPassword, setIsStrongPassword] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simular una llamada a una API
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000); // Simula 2 segundos de tiempo de carga
+  }, []);
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
   const checkStrength = (pass) => {
     const requirements = [
-      { regex: /.{8,}/, text: "Al menos 8 carácteres" },
+      { regex: /.{8,}/, text: "Al menos 8 caracteres" },
       { regex: /[0-9]/, text: "Al menos 1 número" },
       { regex: /[A-Z]/, text: "Al menos 1 mayúscula" },
-      { regex: /[a-z]/, text: "Al menos 1 minuscula" },
+      { regex: /[a-z]/, text: "Al menos 1 minúscula" },
     ];
-
     return requirements.map((req) => ({
       met: req.regex.test(pass),
       text: req.text,
@@ -25,7 +34,7 @@ export default function CrearCuentaPasswordValidation() {
 
   const validatePassword = (pass) => {
     const strength = checkStrength(pass);
-    return strength.every(req => req.met);
+    return strength.every((req) => req.met);
   };
 
   const handlePasswordChange = (e) => {
@@ -55,7 +64,33 @@ export default function CrearCuentaPasswordValidation() {
     return "Contraseña fuerte";
   };
 
-  return isStrongPassword ? (
+  // Skeleton para toda la sección mientras carga
+  if (isLoading) {
+    return (
+      <div className="space-y-4">
+        {/* Input de contraseña */}
+        <div className="relative">
+          <Skeleton height={44} className="w-full" />
+        </div>
+        {/* Barra de fuerza */}
+        <Skeleton height={8} width="100%" />
+        {/* Descripción de fuerza */}
+        <Skeleton height={20} width={150} />
+        {/* Lista de requisitos */}
+        <div className="space-y-1.5">
+          {[...Array(4)].map((_, index) => (
+            <div key={index} className="flex items-center gap-2">
+              <Skeleton circle width={16} height={16} />
+              <Skeleton width={200} height={14} />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Contenido cuando ya no está cargando
+  return (
     <div className="group relative mt-3">
       <div className="relative">
         <Input
@@ -68,7 +103,6 @@ export default function CrearCuentaPasswordValidation() {
           aria-invalid={strengthScore < 4}
           aria-describedby="password-strength"
         />
-
         <label
           htmlFor="password-input-valid"
           className="absolute left-2 top-0 -translate-y-1/2 z-10 
@@ -81,38 +115,26 @@ export default function CrearCuentaPasswordValidation() {
             peer-focus:top-0 
             peer-focus:-translate-y-1/2 
             peer-focus:text-xs 
-            peer-focus:text-foreground 
-            peer:not(:placeholder-shown):top-0 
-            peer:not(:placeholder-shown):-translate-y-1/2 
-            peer:not(:placeholder-shown):text-xs"
+            peer-focus:text-foreground"
         >
           Contraseña
         </label>
-
         <button
-          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
           type="button"
           onClick={toggleVisibility}
-          aria-label={isVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
-          aria-pressed={isVisible}
-          aria-controls="password"
+          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg"
         >
-          {isVisible ? (
-            <Eye size={16} strokeWidth={2} aria-hidden="true" />
-          ) : (
-            <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
-          )}
+          {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
         </button>
       </div>
 
-      {/* Password strength indicator */}
+      {/* Barra de fuerza */}
       <div
-        className="mb-4 mt-3 h-1 w-full overflow-hidden rounded-full bg-border"
+        className="mt-3 h-1 w-full overflow-hidden rounded-full bg-border"
         role="progressbar"
         aria-valuenow={strengthScore}
         aria-valuemin={0}
         aria-valuemax={4}
-        aria-label="Fuerza de contraseña"
       >
         <div
           className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
@@ -120,103 +142,17 @@ export default function CrearCuentaPasswordValidation() {
         ></div>
       </div>
 
-      {/* Password strength description */}
-      <p id="password-strength" className="mb-2 text-sm font-medium text-foreground">
+      {/* Texto de fuerza */}
+      <p id="password-strength" className="text-sm font-medium">
         {getStrengthText(strengthScore)}
       </p>
 
-      {/* Password requirements list */}
-      <ul className="space-y-1.5" aria-label="Requisitos de contraseña">
+      {/* Lista de requisitos */}
+      <ul className="space-y-1.5">
         {strength.map((req, index) => (
           <li key={index} className="flex items-center gap-2">
-            {req.met ? (
-              <Check size={16} className="text-emerald-500" aria-hidden="true" />
-            ) : (
-              <X size={16} className="text-muted-foreground/80" aria-hidden="true" />
-            )}
-            <span className={`text-xs ${req.met ? "text-emerald-600" : "text-muted-foreground"}`}>
-              {req.text}
-              <span className="sr-only">
-                {req.met ? " - Requisito cumplido" : " - Requisito no cumplido"}
-              </span>
-            </span>
-          </li>
-        ))}
-      </ul>
-    </div>
-  ) : (
-    <div className="group space-y-2">
-      <div className="relative">
-        <Input
-          id="password-input-valid"
-          className="peer pe-9"
-          placeholder=" "
-          type={isVisible ? "text" : "password"}
-          value={password}
-          onChange={handlePasswordChange}
-          aria-invalid={strengthScore < 4}
-          aria-describedby="password-strength"
-        />
-
-        <label
-          htmlFor="password-input-valid"
-          className="absolute left-2 top-0 -translate-y-1/2 z-10 
-            text-xs text-muted-foreground/70 
-            transition-all duration-200 
-            bg-background px-1
-            peer-placeholder-shown:top-1/2 
-            peer-placeholder-shown:-translate-y-1/2 
-            peer-placeholder-shown:text-base 
-            peer-focus:top-0 
-            peer-focus:-translate-y-1/2 
-            peer-focus:text-xs 
-            peer-focus:text-foreground 
-            peer:not(:placeholder-shown):top-0 
-            peer:not(:placeholder-shown):-translate-y-1/2 
-            peer:not(:placeholder-shown):text-xs"
-        >
-          Contraseña
-        </label>
-
-        <button
-          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg text-muted-foreground/80 outline-offset-2 transition-colors hover:text-foreground focus:z-10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring/70 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50"
-          type="button"
-          onClick={toggleVisibility}
-          aria-label={isVisible ? "Ocultar contraseña" : "Mostrar contraseña"}
-          aria-pressed={isVisible}
-          aria-controls="password"
-        >
-          {isVisible ? (
-            <EyeOff size={16} strokeWidth={2} aria-hidden="true" />
-          ) : (
-            <Eye size={16} strokeWidth={2} aria-hidden="true" />
-          )}
-        </button>
-      </div>
-      <p className="mt-2 text-xs text-destructive" role="alert" aria-live="polite">
-        Tu contraseña no cumple con los requisitos
-      </p>
-
-      {/* Password strength description */}
-      <p className="text-sm font-medium text-destructive">
-        Debe Contener:
-      </p>
-
-      {/* Password requirements list */}
-      <ul className="space-y-1.5" aria-label="Requisitos de contraseña">
-        {strength.map((req, index) => (
-          <li key={index} className="flex items-center gap-2">
-            {req.met ? (
-              <Check size={16} className="text-emerald-500" aria-hidden="true" />
-            ) : (
-              <X size={16} className="text-destructive" aria-hidden="true" />
-            )}
-            <span className={`text-xs ${req.met ? "text-emerald-600" : "text-destructive"}`}>
-              {req.text}
-              <span className="sr-only">
-                {req.met ? " - Requisito cumplido" : " - Requisito no cumplido"}
-              </span>
-            </span>
+            {req.met ? <Check size={16} /> : <X size={16} />}
+            <span>{req.text}</span>
           </li>
         ))}
       </ul>
