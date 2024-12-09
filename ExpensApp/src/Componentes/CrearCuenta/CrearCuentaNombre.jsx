@@ -1,7 +1,8 @@
 
 import { Input } from "@/components/ui/input";
+import PropTypes from 'prop-types';
 
-export default function CrearCuentaNombre({texto, textoPlaceholder}) {
+export default function CrearCuentaNombre({texto, textoPlaceholder, onChange}) {
   return (
     <div className="group relative mt-3">
       <label
@@ -10,7 +11,13 @@ export default function CrearCuentaNombre({texto, textoPlaceholder}) {
       >
         <span className="inline-flex bg-background px-2">{texto}</span>
       </label>
-      <Input id="input-22" type="email" placeholder={textoPlaceholder} />
+      <Input id="input-22" type="text" placeholder={textoPlaceholder} onChange={onChange}/>
     </div>
   );
 }
+
+CrearCuentaNombre.propTypes = {
+  texto: PropTypes.string.isRequired,
+  textoPlaceholder: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+};

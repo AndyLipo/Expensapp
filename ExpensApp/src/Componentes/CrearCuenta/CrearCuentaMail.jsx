@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { Input } from "@/components/ui/input";
+import PropTypes from 'prop-types';
 
-export default function CrearCuentaEmailValidation() {
+export default function CrearCuentaMail({id, onChange}) {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
@@ -14,12 +15,13 @@ export default function CrearCuentaEmailValidation() {
     const inputEmail = e.target.value;
     setEmail(inputEmail);
     setIsValidEmail(validateEmail(inputEmail));
+    onChange(e);
   };
 
-  return isValidEmail ? (
+  return (
     <div className="group relative mt-3">
       <label
-        htmlFor="input-42"
+        htmlFor={id}
         className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all 
         group-focus-within:pointer-events-none 
         group-focus-within:top-0 
@@ -37,44 +39,20 @@ export default function CrearCuentaEmailValidation() {
         <span className="inline-flex bg-background px-2">Ingresa tu correo</span>
       </label>
       <Input 
-        id="input-42" 
+        id={id} 
         type="email" 
-        placeholder=""  // Empty placeholder
+        placeholder="Ingresa tu correo"
         value={email}
         onChange={handleEmailChange}
       />
-    </div>
-  ) : (
-    <div className="space-y-2">
-      <label
-        htmlFor="input-06"
-        className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all 
-        group-focus-within:pointer-events-none 
-        group-focus-within:top-0 
-        group-focus-within:cursor-default 
-        group-focus-within:text-xs 
-        group-focus-within:font-medium 
-        group-focus-within:text-foreground 
-        has-[+input:not(:placeholder-shown)]:pointer-events-none 
-        has-[+input:not(:placeholder-shown)]:top-0 
-        has-[+input:not(:placeholder-shown)]:cursor-default 
-        has-[+input:not(:placeholder-shown)]:text-xs 
-        has-[+input:not(:placeholder-shown)]:font-medium 
-        has-[+input:not(:placeholder-shown)]:text-foreground"
-      >
-        <span className="inline-flex bg-background px-2">Ingresa tu correo</span>
-      </label>
-      <Input
-        id="input-06"
-        className="border-destructive/80 text-destructive focus-visible:border-destructive/80 focus-visible:ring-destructive/20"
-        type="email"
-        placeholder=""  // Empty placeholder
-        value={email}
-        onChange={handleEmailChange}
-      />
-      <p className="mt-2 text-xs text-destructive" role="alert" aria-live="polite">
-        Tu correo no es válido
-      </p>
+      {!isValidEmail && (
+        <p className="text-xs text-destructive">Tu correo no es válido</p>
+      )}
     </div>
   );
 }
+
+CrearCuentaMail.propTypes = {
+  id: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};

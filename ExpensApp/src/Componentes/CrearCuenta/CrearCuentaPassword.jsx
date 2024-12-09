@@ -1,12 +1,15 @@
 import { Input } from "@/components/ui/input";
 import { Check, Eye, EyeOff, X } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+import { useState, useEffect, useMemo } from "react";
+import "react-loading-skeleton/dist/skeleton.css";
+import PropTypes from 'prop-types';
 
-export default function CrearCuentaPasswordValidation() {
+/*revisar colores barra de fuerza y textos de fuerza de contraseña*/
+
+export default function CrearCuentaPassword({id, onChange}) {
   const [password, setPassword] = useState("");
-  const [isStrongPassword, setIsStrongPassword] = useState(true);
   const [isVisible, setIsVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -18,7 +21,7 @@ export default function CrearCuentaPasswordValidation() {
   }, []);
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
-
+  
   const checkStrength = (pass) => {
     const requirements = [
       { regex: /.{8,}/, text: "Al menos 8 caracteres" },
@@ -26,6 +29,7 @@ export default function CrearCuentaPasswordValidation() {
       { regex: /[A-Z]/, text: "Al menos 1 mayúscula" },
       { regex: /[a-z]/, text: "Al menos 1 minúscula" },
     ];
+
     return requirements.map((req) => ({
       met: req.regex.test(pass),
       text: req.text,
@@ -40,7 +44,7 @@ export default function CrearCuentaPasswordValidation() {
   const handlePasswordChange = (e) => {
     const inputPassword = e.target.value;
     setPassword(inputPassword);
-    setIsStrongPassword(validatePassword(inputPassword));
+    onChange(e); // Actualiza el estado global del padre
   };
 
   const strength = checkStrength(password);
@@ -89,23 +93,20 @@ export default function CrearCuentaPasswordValidation() {
     );
   }
 
-  // Contenido cuando ya no está cargando
   return (
     <div className="group relative mt-3">
       <div className="relative">
-        <Input
-          id="password-input-valid"
-          className="peer pe-9"
-          placeholder=" "
-          type={isVisible ? "text" : "password"}
-          value={password}
-          onChange={handlePasswordChange}
-          aria-invalid={strengthScore < 4}
-          aria-describedby="password-strength"
-        />
-        <label
-          htmlFor="password-input-valid"
-          className="absolute left-2 top-0 -translate-y-1/2 z-10 
+      <Input
+        id={id}
+        type={isVisible ? "text" : "password"}
+        placeholder="Ingresa tu contraseña"
+        onChange={onChange}
+        aria-invalid={strengthScore < 4}
+        aria-describedby="password-strength"
+      />
+      <label 
+        htmlFor={id} 
+        className="absolute left-2 top-0 -translate-y-1/2 z-10 
             text-xs text-muted-foreground/70 
             transition-all duration-200 
             bg-background px-1
@@ -115,47 +116,51 @@ export default function CrearCuentaPasswordValidation() {
             peer-focus:top-0 
             peer-focus:-translate-y-1/2 
             peer-focus:text-xs 
-            peer-focus:text-foreground"
-        >
-          Contraseña
-        </label>
-        <button
-          type="button"
-          onClick={toggleVisibility}
-          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center rounded-e-lg"
-        >
-          {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
-        </button>
-      </div>
-
-      {/* Barra de fuerza */}
-      <div
-        className="mt-3 h-1 w-full overflow-hidden rounded-full bg-border"
-        role="progressbar"
-        aria-valuenow={strengthScore}
-        aria-valuemin={0}
-        aria-valuemax={4}
+            peer-focus:text-foreground">Contraseña
+      </label>
+      <button
+        type="button"
+        onClick={toggleVisibility}
+        className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center"
       >
-        <div
-          className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
-          style={{ width: `${(strengthScore / 4) * 100}%` }}
-        ></div>
+        {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+      </button>
       </div>
 
-      {/* Texto de fuerza */}
+    {/* Barra de fuerza */}
+    <div
+      className="mt-3 h-1 w-full overflow-hidden rounded-full bg-border"
+      role="progressbar"
+      aria-valuenow={strengthScore}
+      aria-valuemin={0}
+      aria-valuemax={4}
+    >
+      <div
+        className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
+        style={{ width: `${(strengthScore / 4) * 100}%` }}
+      >
+      </div>
+    </div>
+
+    {/* Texto de fuerza */}
       <p id="password-strength" className="text-sm font-medium">
-        {getStrengthText(strengthScore)}
+      {getStrengthText(strengthScore)}
       </p>
 
-      {/* Lista de requisitos */}
-      <ul className="space-y-1.5">
-        {strength.map((req, index) => (
-          <li key={index} className="flex items-center gap-2">
-            {req.met ? <Check size={16} /> : <X size={16} />}
-            <span>{req.text}</span>
-          </li>
-        ))}
-      </ul>
+    {/* Lista de requisitos */}
+    <ul className="space-y-1.5">
+      {strength.map((req, index) => (
+      <li key={index} className="flex items-center gap-2">
+        {req.met ? <Check size={16} /> : <X size={16} />}
+        <span>{req.text}</span>
+      </li>
+      ))}
+    </ul>
     </div>
   );
 }
+
+CrearCuentaPassword.propTypes = {
+  id: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};

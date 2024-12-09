@@ -1,7 +1,7 @@
 
 import { Input } from "@/components/ui/input";
 
-export default function CrearCuentaInput({texto, textoPlaceholder}) {
+export default function CrearCuentaInput({texto, textoPlaceholder, onChange}) {
   return (
     <div className="group relative mt-3">
       <label
@@ -10,7 +10,7 @@ export default function CrearCuentaInput({texto, textoPlaceholder}) {
       >
         <span className="inline-flex bg-background px-2">{texto}</span>
       </label>
-      <Input id="input-32" type="email" placeholder={textoPlaceholder} />
+      <Input id="input-32" type="email" placeholder={textoPlaceholder} onChange={onChange} />
     </div>
   );
 }
