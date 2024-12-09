@@ -14,7 +14,9 @@ export const IniciarSesionFormulario = () => {
         setIsLoading(false);
       }, 2000); // Simula 2 segundos de tiempo de carga
     }, []);
-  
+  /*Crear handlesubmit axios.get('http://localhost:3000/login)* y pasarle usuarioEmail: email,
+    usuarioPassword: password,
+    retornar con formulario en vez de div y agregar boton para que maneje el handleSubmit*/
   return (
     <>
     <div>

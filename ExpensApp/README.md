@@ -9,7 +9,7 @@ Currently, two official plugins are available:
 
 CONFIGURACION INICIAL
 
-- Eliminar archivos package.json y package-lock.jason a nivel de primer carpeta Expesapp
+- Eliminar archivos package.json y package-lock.json a nivel de primer carpeta Expesapp
 - Eliminar archivo package-lock.json dentro de carpeta node_modules
 - En terminal ejecutar rm -rf node_modules ( si es terminal powershell usar Remove-Item -Recurse -Force .\node_modules )
 - En terminal ejecutar npm install
