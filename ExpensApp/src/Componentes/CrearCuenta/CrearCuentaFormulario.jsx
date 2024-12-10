@@ -42,6 +42,8 @@ export const CrearCuentaFormulario = () => {
   
         setMensaje('Usuario registrado con éxito.');
         console.log('Respuesta del servidor:', response.data);
+
+        navigate('/perfil');
       } catch (error) {
         console.error('Error al registrar el usuario:', error.response?.data || error.message);
         setMensaje(
@@ -49,7 +51,6 @@ export const CrearCuentaFormulario = () => {
         );
       } finally {
         setIsSubmitting(false);
-        navigate('/perfil');
       }
    };
 
