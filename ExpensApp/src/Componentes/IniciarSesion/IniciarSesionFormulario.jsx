@@ -21,27 +21,25 @@ export const IniciarSesionFormulario = () => {
         setIsLoading(false);
       }, 2000); // Simula 2 segundos de tiempo de carga
     }, []);
-  /*Crear handlesubmit axios.get('http://localhost:3000/login)* y pasarle usuarioEmail: email,
-    usuarioPassword: password,
-    retornar con formulario en vez de div y agregar boton para que maneje el handleSubmit*/
     
     const handleSubmit = async (e) => {
       e.preventDefault();
       setIsSubmitting(true);
 
       try {
+        console.log('Enviando:', { email, password });
         const response = await axios.post(
           'http://localhost:3000/login',
           {
             usuarioEmail: email,
             usuarioPassword: password,
-            idRol: 1, // Por ejemplo, rol de "consorcista"
           },
-          { withCredentials: true }
+          { withCredentials: true }          
         );
-  
         setMensaje('Usuario registrado con éxito.');
         console.log('Respuesta del servidor:', response.data);
+
+        navigate('/perfil');
       } catch (error) {
         console.error('Error al registrar el usuario:', error.response?.data || error.message);
         setMensaje(
@@ -49,7 +47,6 @@ export const IniciarSesionFormulario = () => {
         );
       } finally {
         setIsSubmitting(false);
-        navigate('/perfil');
       }
     }
 

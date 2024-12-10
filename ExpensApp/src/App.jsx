@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom';
 import { IniciarSesionFormulario } from "./Componentes/IniciarSesion/IniciarSesionFormulario"
 import { CrearCuentaPagina } from "./Paginas/CrearCuentaPagina"
+import {Perfil} from "./Paginas/Perfil"
 import './index.css'
 import { useEffect, useState } from 'react';
 
@@ -18,6 +19,7 @@ function App() {
     <Routes>
       <Route path='/' element={<CrearCuentaPagina />} />
       <Route path='/login' element={<IniciarSesionFormulario />} />
+      <Route path='/perfil' element={<Perfil />}/>
     </Routes>
     
   )
