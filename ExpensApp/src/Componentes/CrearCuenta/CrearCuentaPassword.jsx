@@ -36,10 +36,10 @@ export default function CrearCuentaPassword({id, onChange}) {
     }));
   };
 
-  const validatePassword = (pass) => {
-    const strength = checkStrength(pass);
-    return strength.every((req) => req.met);
-  };
+  // const validatePassword = (pass) => {
+  //   const strength = checkStrength(pass);
+  //   return strength.every((req) => req.met);
+  // };
 
   const handlePasswordChange = (e) => {
     const inputPassword = e.target.value;
@@ -67,32 +67,7 @@ export default function CrearCuentaPassword({id, onChange}) {
     if (score === 3) return "Contraseña media";
     return "Contraseña fuerte";
   };
-
-  // Skeleton para toda la sección mientras carga
-  if (isLoading) {
-    return (
-      <div className="space-y-4">
-        {/* Input de contraseña */}
-        <div className="relative">
-          <Skeleton height={44} className="w-full" />
-        </div>
-        {/* Barra de fuerza */}
-        <Skeleton height={8} width="100%" />
-        {/* Descripción de fuerza */}
-        <Skeleton height={20} width={150} />
-        {/* Lista de requisitos */}
-        <div className="space-y-1.5">
-          {[...Array(4)].map((_, index) => (
-            <div key={index} className="flex items-center gap-2">
-              <Skeleton circle width={16} height={16} />
-              <Skeleton width={200} height={14} />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
+  
   return (
     <div className="group relative mt-3">
       <div className="relative">
@@ -100,7 +75,7 @@ export default function CrearCuentaPassword({id, onChange}) {
         id={id}
         type={isVisible ? "text" : "password"}
         placeholder="Ingresa tu contraseña"
-        onChange={onChange}
+        onChange={handlePasswordChange}
         aria-invalid={strengthScore < 4}
         aria-describedby="password-strength"
       />
@@ -148,14 +123,25 @@ export default function CrearCuentaPassword({id, onChange}) {
       </p>
 
     {/* Lista de requisitos */}
-    <ul className="space-y-1.5">
-      {strength.map((req, index) => (
-      <li key={index} className="flex items-center gap-2">
-        {req.met ? <Check size={16} /> : <X size={16} />}
-        <span>{req.text}</span>
-      </li>
-      ))}
-    </ul>
+    <ul className="space-y-1.5 mt-3">
+  {strength.map((req, index) => (
+    <li key={index} className="flex items-center gap-2">
+      {req.met ? (
+        <Check className="text-emerald-500" size={16} />
+      ) : (
+        <X className="text-red-500" size={16} />
+      )}
+      <span
+        className={`text-sm font-medium ${
+          req.met ? "text-emerald-500" : "text-muted-foreground"
+        }`}
+      >
+        {req.text}
+      </span>
+    </li>
+  ))}
+</ul>
+
     </div>
   );
 }
@@ -164,3 +150,5 @@ CrearCuentaPassword.propTypes = {
   id: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
+
+

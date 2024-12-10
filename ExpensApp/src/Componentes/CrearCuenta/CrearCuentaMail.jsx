@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import PropTypes from 'prop-types';
 
-export default function CrearCuentaMail({id, onChange}) {
+export default function CrearCuentaMail({id, onChange, textoPlaceholder}) {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
@@ -41,7 +41,7 @@ export default function CrearCuentaMail({id, onChange}) {
       <Input 
         id={id} 
         type="email" 
-        placeholder="Ingresa tu correo"
+        placeholder={textoPlaceholder}
         value={email}
         onChange={handleEmailChange}
       />
@@ -55,4 +55,5 @@ export default function CrearCuentaMail({id, onChange}) {
 CrearCuentaMail.propTypes = {
   id: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  textoPlaceholder: PropTypes.string,
 };

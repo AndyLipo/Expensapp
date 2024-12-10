@@ -3,12 +3,19 @@ import IniciarSesionContraseña from './IniciarSesionContraseña'
 import IniciarSesionMail from './IniciarSesionMail'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 
 export const IniciarSesionFormulario = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [mensaje, setMensaje] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+   useEffect(() => {
       // Simular una llamada a una API
       setTimeout(() => {
         setIsLoading(false);
@@ -17,24 +24,83 @@ export const IniciarSesionFormulario = () => {
   /*Crear handlesubmit axios.get('http://localhost:3000/login)* y pasarle usuarioEmail: email,
     usuarioPassword: password,
     retornar con formulario en vez de div y agregar boton para que maneje el handleSubmit*/
-  return (
-    <>
-    <div>
-      
-       {isLoading ?(
-        <Skeleton height={40} width="100%" />
-       ):(
+    
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      setIsSubmitting(true);
 
-        <IniciarSesionMail titulo="Email" id="usuario_correo"/>
-       )}
-    </div>
-    <div>
-    {isLoading ?(
-        <Skeleton height={40} width="100%" />
-       ):(
-        <IniciarSesionContraseña id="usuario_password"/>
-       )}
-    </div>
+      try {
+        const response = await axios.post(
+          'http://localhost:3000/login',
+          {
+            usuarioEmail: email,
+            usuarioPassword: password,
+            idRol: 1, // Por ejemplo, rol de "consorcista"
+          },
+          { withCredentials: true }
+        );
+  
+        setMensaje('Usuario registrado con éxito.');
+        console.log('Respuesta del servidor:', response.data);
+      } catch (error) {
+        console.error('Error al registrar el usuario:', error.response?.data || error.message);
+        setMensaje(
+          error.response?.data?.message || 'Error al registrar el usuario. Intente nuevamente.'
+        );
+      } finally {
+        setIsSubmitting(false);
+        navigate('/perfil');
+      }
+    }
+
+    if(isLoading) {
+      // Mostrar Skeleton mientras carga
+    return (
+      <div>
+        <div className="space-y-10 max-w-md mx-auto">
+          <Skeleton width={200} height={14} />
+          <Skeleton height={40} width="100%" />
+          <Skeleton width={200} height={14} className='mt-10'/>
+          <Skeleton height={44} className="w-full"/> 
+        </div>
+        <div className='mt-5 max-w-md mx-auto'>
+          <Skeleton height={50} width="100%" className=''/>
+        </div>  
+      </div>
+    );
+   }
+    return (
+    <>
+    <form className="space-y-10 w-full max-w-md mx-auto" onSubmit={handleSubmit}>   
+      <div className="max-w-md mx-auto">
+          <IniciarSesionMail 
+            titulo="Email" 
+            id="usuarioEmail"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+      </div>
+      <div className="max-w-md mx-auto">
+          <IniciarSesionContraseña 
+          id="usuarioPassword"
+          onChange={(e) => setPassword(e.target.value)}
+          />
+      </div>
+      <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-full p-3 bg-blue-500 text-white rounded-lg ${
+            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+         >
+            {isSubmitting ? 'Iniciando Sesión...' : 'Iniciar Sesión'}
+         </button>
+         {mensaje && (
+            <p className={`mt-4 text-center ${mensaje.includes('éxito') ? 'text-green-500' : 'text-red-500'}`}>
+            {mensaje}
+            </p>
+            )
+         }
+    </form>
     </>
 )
 }
