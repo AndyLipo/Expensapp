@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import PropTypes from 'prop-types';
 
-export default function CrearCuentaMail({id, onChange, textoPlaceholder}) {
+export default function CrearCuentaMail({ id, onChange, textoPlaceholder }) {
   const [email, setEmail] = useState('');
   const [isValidEmail, setIsValidEmail] = useState(true);
 
@@ -22,31 +22,24 @@ export default function CrearCuentaMail({id, onChange, textoPlaceholder}) {
     <div className="group relative mt-3">
       <label
         htmlFor={id}
-        className="origin-start absolute top-1/2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all 
-        group-focus-within:pointer-events-none 
-        group-focus-within:top-0 
-        group-focus-within:cursor-default 
-        group-focus-within:text-xs 
-        group-focus-within:font-medium 
-        group-focus-within:text-foreground 
-        has-[+input:not(:placeholder-shown)]:pointer-events-none 
-        has-[+input:not(:placeholder-shown)]:top-0 
-        has-[+input:not(:placeholder-shown)]:cursor-default 
-        has-[+input:not(:placeholder-shown)]:text-xs 
-        has-[+input:not(:placeholder-shown)]:font-medium 
-        has-[+input:not(:placeholder-shown)]:text-foreground"
+        className="origin-start absolute top-1/2 left-2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all 
+        group-focus-within:top-0 group-focus-within:left-2 group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground 
+        group-focus-within:bg-[#D6F2E5] group-focus-within:px-1 
+        has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:left-2 has-[+input:not(:placeholder-shown)]:text-xs 
+        has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground has-[+input:not(:placeholder-shown)]:bg-[#D6F2E5]"
       >
-        <span className="inline-flex bg-background px-2">Ingresa tu correo</span>
+        <span className="inline-flex px-2">Ingresa tu correo</span>
       </label>
-      <Input 
-        id={id} 
-        type="email" 
+      <Input
+        id={id}
+        type="email"
         placeholder={textoPlaceholder}
         value={email}
         onChange={handleEmailChange}
+        className="w-full px-2 py-2 text-base border border-gray-300 rounded-md focus:border-green-500 focus:ring focus:ring-green-200"
       />
       {!isValidEmail && (
-        <p className="text-xs text-destructive">Tu correo no es válido</p>
+        <p className="text-xs text-destructive mt-1">Tu correo no es válido</p>
       )}
     </div>
   );

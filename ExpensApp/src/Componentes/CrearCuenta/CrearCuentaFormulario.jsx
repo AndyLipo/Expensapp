@@ -58,14 +58,14 @@ export const CrearCuentaFormulario = () => {
       // Mostrar Skeleton mientras carga
     return (
       <div>
-      <div className="space-y-10 max-w-md mx-auto">
+      <div className="space-y-10 max-w-sm mx-auto">
         <Skeleton height={40} width="100%" />
         <Skeleton height={40} width="100%" className="flex my-10"/>
         <Skeleton height={44} className="w-full" />
         <Skeleton height={8} width="100%" />
         <Skeleton height={20} width={150} />
       </div>
-        <div className="mt-5 max-w-md mx-auto">
+        <div className="mt-5 max-w-sm mx-auto">
           {[...Array(4)].map((_, index) => (
             <div key={index} className="flex items-center gap-1">
               <Skeleton circle width={16} height={16} />
@@ -73,15 +73,16 @@ export const CrearCuentaFormulario = () => {
             </div>
           ))}
         </div>
-        <div className='mt-3 max-w-md mx-auto'>
-          <Skeleton height={50} width="100%" className=''/>
+        <div className='mt-3 max-w-sm mx-auto'>
+          <Skeleton height={50} borderRadius={20} width="100%" className=''/>
+          <Skeleton height={50} borderRadius={20} width="100%" className=''/>
         </div>
         </div>
     );
    }
     
    return (
-      <form className="space-y-10 w-full max-w-md mx-auto" onSubmit={handleSubmit}>
+      <form className="space-y-10 w-full max-w-[244px] mx-auto" onSubmit={handleSubmit}>
          <div>
             <CrearCuentaNombre
             texto="Nombre"
@@ -107,11 +108,20 @@ export const CrearCuentaFormulario = () => {
          <button
             type="submit"
             disabled={isSubmitting}
-            className={`w-full p-3 bg-blue-500 text-white rounded-lg ${
+            className={`w-[206px] p-3 bg-[#94D9A4] text-[#D6F2E5]  opacity-50 rounded-full ${
+            isSubmitting ? 'opacity-50' : ''
+            }`}
+         >
+            {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
+         </button>
+         <button
+            type="submit"
+            disabled={isSubmitting}
+            className={`w-[206px] p-3 bg-[#4A607A] text-[#D6F2E5] rounded-full ${
             isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
             }`}
          >
-            {isSubmitting ? 'Registrando...' : 'Registrarse'}
+            {isSubmitting ? 'Cancelando...' : 'Cancelar'}
          </button>
 
          {mensaje && (
