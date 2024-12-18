@@ -1,22 +1,23 @@
-
 import { Input } from "@/components/ui/input";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, Lock } from "lucide-react";
 import { useState } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 
-export default function IniciarSesionContraseña({onChange}) {
+export default function IniciarSesionContraseña({ onChange }) {
   const [isVisible, setIsVisible] = useState(false);
 
   const toggleVisibility = () => setIsVisible((prevState) => !prevState);
 
-  
-  
   return (
     <div className="space-y-2">
       <div className="relative">
+        {/* Ícono de candado */}
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-muted-foreground/80">
+          <Lock size={16} strokeWidth={2} aria-hidden="true" />
+        </div>
         <Input
           id="input-23"
-          className="pe-9"
+          className="pl-10 pe-9"
           placeholder="Contraseña"
           type={isVisible ? "text" : "password"}
           onChange={onChange}

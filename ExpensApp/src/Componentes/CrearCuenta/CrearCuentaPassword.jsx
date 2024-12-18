@@ -57,71 +57,71 @@ export default function CrearCuentaPassword({ id, onChange }) {
 
   return (
     <div className="group relative mt-3">
-      <div className="relative">
-        {/* Ícono de candado */}
-        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-muted-foreground/80">
-          <Lock size={16} strokeWidth={2} aria-hidden="true" />
-        </div>
-        {/* Input de contraseña */}
-        <Input
-          id={id}
-          type={isVisible ? "text" : "password"}
-          placeholder="Contraseña"
-          value={password}
-          onChange={handlePasswordChange}
-          aria-invalid={strengthScore < 4}
-          aria-describedby="password-strength"
-          className="peer ps-9"
-        />
-        {/* Botón para mostrar/ocultar contraseña */}
-        <button
-          type="button"
-          onClick={toggleVisibility}
-          className="absolute inset-y-0 end-0 flex h-full w-9 items-center justify-center"
-        >
-          {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
-        </button>
+    <div className="relative">
+      {/* Ícono de candado */}
+      <div className="absolute inset-y-0 left-3 flex items-center pointer-events-none text-muted-foreground/80">
+        <Lock size={16} strokeWidth={2} aria-hidden="true" />
       </div>
-
-      {/* Barra de fuerza */}
-      <div
-        className="mt-3 h-1 w-full overflow-hidden rounded-full bg-border"
-        role="progressbar"
-        aria-valuenow={strengthScore}
-        aria-valuemin={0}
-        aria-valuemax={4}
+      {/* Input de contraseña */}
+      <Input
+        id={id}
+        type={isVisible ? "text" : "password"}
+        placeholder="Contraseña"
+        value={password}
+        onChange={handlePasswordChange}
+        aria-invalid={strengthScore < 4}
+        aria-describedby="password-strength"
+        className="pl-10 pr-9" 
+      />
+      {/* Botón para mostrar/ocultar contraseña */}
+      <button
+        type="button"
+        onClick={toggleVisibility}
+        className="absolute inset-y-0 right-0 flex h-full w-9 items-center justify-center"
       >
-        <div
-          className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
-          style={{ width: `${(strengthScore / 4) * 100}%` }}
-        />
-      </div>
-
-      {/* Texto de fuerza */}
-      <p id="password-strength" className="text-sm font-medium">
-        {getStrengthText(strengthScore)}
-      </p>
-
-      {/* Lista de requisitos */}
-      <ul className="space-y-1.5 mt-3">
-        {strength.map((req, index) => (
-          <li key={index} className="flex items-center gap-2">
-            {req.met ? (
-              <Check className="text-emerald-500" size={16} />
-            ) : (
-              <X className="text-red-500" size={16} />
-            )}
-            <span
-              className={`text-sm font-medium ${
-                req.met ? "text-emerald-500" : "text-muted-foreground"
-              }`}
-            >
-              {req.text}
-            </span>
-          </li>
-        ))}
-      </ul>
+        {isVisible ? <EyeOff size={16} /> : <Eye size={16} />}
+      </button>
     </div>
+  
+    {/* Barra de fuerza */}
+    <div
+      className="mt-3 h-1 w-full overflow-hidden rounded-full bg-border"
+      role="progressbar"
+      aria-valuenow={strengthScore}
+      aria-valuemin={0}
+      aria-valuemax={4}
+    >
+      <div
+        className={`h-full ${getStrengthColor(strengthScore)} transition-all duration-500 ease-out`}
+        style={{ width: `${(strengthScore / 4) * 100}%` }}
+      />
+    </div>
+  
+    {/* Texto de fuerza */}
+    <p id="password-strength" className="text-sm font-medium">
+      {getStrengthText(strengthScore)}
+    </p>
+  
+    {/* Lista de requisitos */}
+    <ul className="space-y-1.5 mt-3">
+      {strength.map((req, index) => (
+        <li key={index} className="flex items-center gap-2">
+          {req.met ? (
+            <Check className="text-emerald-500" size={16} />
+          ) : (
+            <X className="text-red-500" size={16} />
+          )}
+          <span
+            className={`text-sm font-medium ${
+              req.met ? "text-emerald-500" : "text-muted-foreground"
+            }`}
+          >
+            {req.text}
+          </span>
+        </li>
+      ))}
+    </ul>
+  </div>
   );
 }
 
