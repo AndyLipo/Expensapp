@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import IniciarSesionContraseña from './IniciarSesionContraseña'
-import IniciarSesionMail from './IniciarSesionMail'
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import CrearCuentaMail from '../CrearCuenta/CrearCuentaMail';
 
 
 export const IniciarSesionFormulario = () => {
@@ -55,49 +55,73 @@ export const IniciarSesionFormulario = () => {
     return (
       <div>
         <div className="space-y-10 max-w-md mx-auto">
-          <Skeleton width={200} height={14} />
-          <Skeleton height={40} width="100%" />
-          <Skeleton width={200} height={14} className='mt-10'/>
-          <Skeleton height={44} className="w-full"/> 
+          <Skeleton height={44} width="90%" />
+          <Skeleton height={44} className="w-full mt-5"/> 
         </div>
-        <div className='mt-5 max-w-md mx-auto'>
-          <Skeleton height={50} width="100%" className=''/>
-        </div>  
+        <div className='mt-3 max-w-sm mx-auto'>
+          <Skeleton height={50} borderRadius={20} width="100%" className=''/>
+          <Skeleton height={50} borderRadius={20} width="100%" className=''/>
+        </div>
       </div>
     );
    }
     return (
     <>
-    <form className="space-y-10 w-full max-w-md mx-auto" onSubmit={handleSubmit}>   
-      <div className="max-w-md mx-auto">
-          <IniciarSesionMail 
-            titulo="Email" 
-            id="usuarioEmail"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-      </div>
-      <div className="max-w-md mx-auto">
-          <IniciarSesionContraseña 
-          id="usuarioPassword"
-          onChange={(e) => setPassword(e.target.value)}
-          />
-      </div>
-      <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-full p-3 bg-blue-500 text-white rounded-lg ${
-            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-         >
-            {isSubmitting ? 'Iniciando Sesión...' : 'Iniciar Sesión'}
-         </button>
-         {mensaje && (
-            <p className={`mt-4 text-center ${mensaje.includes('éxito') ? 'text-green-500' : 'text-red-500'}`}>
-            {mensaje}
-            </p>
-            )
-         }
-    </form>
+    <form
+  className="space-y-5 w-full max-w-[244px] mx-auto flex flex-col items-center justify-center"
+  onSubmit={handleSubmit}
+>
+  {/* Campo de Email */}
+  <div className="w-full">
+    <CrearCuentaMail
+      titulo="Email"
+      id="usuarioEmail"
+      onChange={(e) => setEmail(e.target.value)}
+    />
+  </div>
+
+  {/* Campo de Contraseña */}
+  <div className="w-full">
+    <IniciarSesionContraseña
+      id="usuarioPassword"
+      onChange={(e) => setPassword(e.target.value)}
+    />
+  </div>
+
+  {/* Botón "Crear cuenta" */}
+  <button
+    type="submit"
+    disabled={isSubmitting}
+    className={`w-[206px] p-3 bg-[#94D9A4] text-[#D6F2E5] rounded-full ${
+      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+    }`}
+  >
+    {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
+  </button>
+
+  {/* Botón "Cancelar" */}
+  <button
+    type="button" // Cambié el tipo a "button" para evitar que envíe el formulario
+    disabled={isSubmitting}
+    className={`w-[206px] p-3 bg-[#4A607A] text-[#D6F2E5] rounded-full ${
+      isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+    }`}
+  >
+    {isSubmitting ? "Cancelando..." : "Cancelar"}
+  </button>
+
+  {/* Mensaje */}
+  {mensaje && (
+    <p
+      className={`mt-4 text-center ${
+        mensaje.includes("éxito") ? "text-green-500" : "text-red-500"
+      }`}
+    >
+      {mensaje}
+    </p>
+  )}
+</form>
+
     </>
 )
 }

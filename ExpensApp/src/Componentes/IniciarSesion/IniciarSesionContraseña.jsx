@@ -1,6 +1,5 @@
 
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import PropTypes from 'prop-types';
@@ -14,8 +13,6 @@ export default function IniciarSesionContraseña({onChange}) {
   
   return (
     <div className="space-y-2">
-        <Label htmlFor="input-23">Contraseña</Label>
-      <span className="text-destructive">*</span>
       <div className="relative">
         <Input
           id="input-23"

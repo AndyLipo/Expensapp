@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Input } from "@/components/ui/input";
 import PropTypes from 'prop-types';
+import { Mail } from "lucide-react";
 
 export default function CrearCuentaMail({ id, onChange, textoPlaceholder }) {
   const [email, setEmail] = useState('');
@@ -20,24 +21,18 @@ export default function CrearCuentaMail({ id, onChange, textoPlaceholder }) {
 
   return (
     <div className="group relative mt-3">
-      <label
-        htmlFor={id}
-        className="origin-start absolute top-1/2 left-2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all 
-        group-focus-within:top-0 group-focus-within:left-2 group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground 
-        group-focus-within:bg-[#D6F2E5] group-focus-within:px-1 
-        has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:left-2 has-[+input:not(:placeholder-shown)]:text-xs 
-        has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground has-[+input:not(:placeholder-shown)]:bg-[#D6F2E5]"
-      >
-        <span className="inline-flex px-2">Ingresa tu correo</span>
-      </label>
-      <Input
-        id={id}
-        type="email"
-        placeholder={textoPlaceholder}
-        value={email}
-        onChange={handleEmailChange}
-        className="w-full px-2 py-2 text-base border border-gray-300 rounded-md focus:border-green-500 focus:ring focus:ring-green-200"
-      />
+      <div className="relative">
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-muted-foreground/80 peer-disabled:opacity-50">
+          <Mail size={16} strokeWidth={2} aria-hidden="true" />
+        </div>
+        <Input
+          id={id}
+          type="email"
+          placeholder={textoPlaceholder || "Email"}
+          value={email}
+          onChange={handleEmailChange} 
+          className="peer ps-9"  />
+      </div>
       {!isValidEmail && (
         <p className="text-xs text-destructive mt-1">Tu correo no es válido</p>
       )}

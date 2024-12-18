@@ -1,9 +1,9 @@
 import { Routes, Route } from 'react-router-dom';
-import { IniciarSesionFormulario } from "./Componentes/IniciarSesion/IniciarSesionFormulario"
 import { CrearCuentaPagina } from "./Paginas/CrearCuentaPagina"
 import {Perfil} from "./Paginas/Perfil"
 import './index.css'
 import { useEffect, useState } from 'react';
+import { IniciarSesionPagina } from './Paginas/IniciarSesionPagina';
 
 
 function App() {
@@ -18,7 +18,7 @@ function App() {
   return (
     <Routes>
       <Route path='/' element={<CrearCuentaPagina />} />
-      <Route path='/login' element={<IniciarSesionFormulario />} />
+      <Route path='/login' element={<IniciarSesionPagina />} />
       <Route path='/perfil' element={<Perfil />}/>
     </Routes>
     

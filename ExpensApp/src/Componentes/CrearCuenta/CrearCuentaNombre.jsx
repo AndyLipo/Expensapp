@@ -1,32 +1,47 @@
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
+import { User } from "lucide-react";
 
-export default function CrearCuentaNombre({ texto, textoPlaceholder, onChange }) {
+export default function CrearCuentaNombre({ id, onChange, textoPlaceholder }) {
+  const [nombre, setNombre] = useState("");
+  const [isValidName, setIsValidName] = useState(true);
+
+  const validateName = (nameToValidate) => {
+    return nameToValidate.trim().length > 0; // Asegura que el campo no esté vacío
+  };
+
+  const handleNameChange = (e) => {
+    const inputName = e.target.value;
+    setNombre(inputName);
+    setIsValidName(validateName(inputName));
+    onChange(e);
+  };
+
   return (
     <div className="group relative mt-3">
-      <label
-        htmlFor="input-22"
-        className="origin-start absolute top-1/2 left-2 block -translate-y-1/2 cursor-text px-1 text-sm text-muted-foreground/70 transition-all 
-        group-focus-within:top-0 group-focus-within:left-2 group-focus-within:text-xs group-focus-within:font-medium group-focus-within:text-foreground 
-        group-focus-within:bg-[#D6F2E5] group-focus-within:px-1 
-        has-[+input:not(:placeholder-shown)]:top-0 has-[+input:not(:placeholder-shown)]:left-2 has-[+input:not(:placeholder-shown)]:text-xs 
-        has-[+input:not(:placeholder-shown)]:font-medium has-[+input:not(:placeholder-shown)]:text-foreground has-[+input:not(:placeholder-shown)]:bg-[#D6F2E5]"
-      >
-        <span className="inline-flex px-1">{texto}</span>
-      </label>
-      <Input
-        id="input-22"
-        type="text"
-        placeholder={textoPlaceholder}
-        onChange={onChange}
-        className="w-full px-2 py-2 text-base border border-gray-300 rounded-md"
-      />
+      <div className="relative">
+        <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none text-muted-foreground/80 peer-disabled:opacity-50">
+          <User size={16} strokeWidth={2} aria-hidden="true" />
+        </div>
+        <Input
+          id={id}
+          type="text"
+          placeholder={textoPlaceholder || "Nombre"}
+          value={nombre}
+          onChange={handleNameChange}
+          className="peer ps-9"
+        />
+      </div>
+      {!isValidName && (
+        <p className="text-xs text-destructive mt-1">El nombre no puede estar vacío</p>
+      )}
     </div>
   );
 }
 
 CrearCuentaNombre.propTypes = {
-  texto: PropTypes.string.isRequired,
-  textoPlaceholder: PropTypes.string,
+  id: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
+  textoPlaceholder: PropTypes.string,
 };

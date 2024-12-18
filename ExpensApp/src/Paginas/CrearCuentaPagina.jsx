@@ -9,10 +9,10 @@ export const CrearCuentaPagina = () => {
         <Navbar />
       </header>
       
-      <main className='p-14 pt-24'>
-        <section className="create-account-section bg-[#D6F2E5] p-4">
+      <main className='p-9 pt-24'>
+        <section className="create-account-section bg-[#D6F2E5] p-4 rounded-lg shadow-lg">
           <TitleCrearCuenta />
-          <article>
+          <article className='mt-10'>
             <CrearCuentaFormulario />
           </article>
         </section>

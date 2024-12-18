@@ -82,54 +82,71 @@ export const CrearCuentaFormulario = () => {
    }
     
    return (
-      <form className="space-y-10 w-full max-w-[244px] mx-auto" onSubmit={handleSubmit}>
-         <div>
-            <CrearCuentaNombre
-            texto="Nombre"
-            textoPlaceholder=""
-            id="usuarioNombre"
-            onChange={(e) => setNombre(e.target.value)}
-            />
-         </div> 
-         <div>
-            <CrearCuentaMail
-            id="usuarioEmail"
-             texto="Ingresa tu correo"
-            textoPlaceholder=""
-            onChange={(e) => setEmail(e.target.value)}
-            />
-         </div>
-         <div>
-            <CrearCuentaPassword
-            id="usuarioPassword"
-            onChange={(e) => setPassword(e.target.value)}
-            />
-         </div> 
-         <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-[206px] p-3 bg-[#94D9A4] text-[#D6F2E5]  opacity-50 rounded-full ${
-            isSubmitting ? 'opacity-50' : ''
-            }`}
-         >
-            {isSubmitting ? 'Creando cuenta...' : 'Crear cuenta'}
-         </button>
-         <button
-            type="submit"
-            disabled={isSubmitting}
-            className={`w-[206px] p-3 bg-[#4A607A] text-[#D6F2E5] rounded-full ${
-            isSubmitting ? 'opacity-50 cursor-not-allowed' : ''
-            }`}
-         >
-            {isSubmitting ? 'Cancelando...' : 'Cancelar'}
-         </button>
-
-         {mensaje && (
-            <p className={`mt-4 text-center ${mensaje.includes('éxito') ? 'text-green-500' : 'text-red-500'}`}>
-            {mensaje}
-            </p>
-            )
-         }
-      </form>
+    <form
+    className="space-y-5 w-full max-w-[244px] mx-auto flex flex-col items-center justify-center"
+    onSubmit={handleSubmit}
+  >
+    {/* Campo de Nombre */}
+    <div className="w-full">
+      <CrearCuentaNombre
+        texto="Nombre"
+        textoPlaceholder=""
+        id="usuarioNombre"
+        onChange={(e) => setNombre(e.target.value)}
+      />
+    </div>
+  
+    {/* Campo de Email */}
+    <div className="w-full">
+      <CrearCuentaMail
+        id="usuarioEmail"
+        texto="Ingresa tu correo"
+        textoPlaceholder=""
+        onChange={(e) => setEmail(e.target.value)}
+      />
+    </div>
+  
+    {/* Campo de Contraseña */}
+    <div className="w-full">
+      <CrearCuentaPassword
+        id="usuarioPassword"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+    </div>
+  
+    {/* Botón "Crear cuenta" */}
+    <button
+      type="submit"
+      disabled={isSubmitting}
+      className={`w-[206px] p-3 bg-[#94D9A4] text-[#D6F2E5] rounded-full ${
+        isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+    >
+      {isSubmitting ? "Creando cuenta..." : "Crear cuenta"}
+    </button>
+  
+    {/* Botón "Cancelar" */}
+    <button
+      type="button" // Cambié el tipo a "button" para evitar que envíe el formulario
+      disabled={isSubmitting}
+      className={`w-[206px] p-3 bg-[#4A607A] text-[#D6F2E5] rounded-full ${
+        isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+      }`}
+    >
+      {isSubmitting ? "Cancelando..." : "Cancelar"}
+    </button>
+  
+    {/* Mensaje */}
+    {mensaje && (
+      <p
+        className={`mt-4 text-center ${
+          mensaje.includes("éxito") ? "text-green-500" : "text-red-500"
+        }`}
+      >
+        {mensaje}
+      </p>
+    )}
+  </form>
+  
    )
 }
